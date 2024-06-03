@@ -33,6 +33,11 @@ async function run() {
       res.send(result);
     })
 
+    app.get("/usedProducts/:id", async (req, res) => {
+      const id = req.params.id;
+      
+    })
+
 
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
