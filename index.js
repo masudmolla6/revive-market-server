@@ -7,7 +7,15 @@ const port = process.env.PORT || 5000;
 
 // middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://revive-market-e46c5.web.app/",
+      "https://revive-market-e46c5.firebaseapp.com/"
+    ],
+    credentials: true,
+  })
+);
 
 
 
@@ -27,6 +35,8 @@ async function run() {
 
     const database = client.db("reviveDB");
     const usedProducts = database.collection("usedProducts");
+    const products = database.collection("products");
+    const bookings = database.collection("bookings");
 
     app.get("/usedProducts", async (req, res) => {
       const result = await usedProducts.find().toArray();
@@ -34,8 +44,36 @@ async function run() {
     })
 
     app.get("/usedProducts/:id", async (req, res) => {
+
       const id = req.params.id;
+
+      console.log(id);
+
+      const allProducts = await products.find().toArray();
+
+      const specificProducts = allProducts.filter(
+        (products) => parseInt(products.category) === parseInt(id));
+
+      console.log(specificProducts);
+
+      res.send(specificProducts);
       
+    })
+
+    app.get("/bookings", async (req, res) => {
+      const result = await bookings.find().toArray();
+
+      res.send(result);
+    })
+
+    app.post("/bookings", async (req, res) => {
+      const newProduct = req.body;
+
+      console.log(newProduct);
+
+      const result = await bookings.insertOne(newProduct);
+
+      res.send(result)
     })
 
 
