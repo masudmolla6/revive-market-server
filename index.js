@@ -9,10 +9,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      "https://revive-market-e46c5.web.app/",
-      "https://revive-market-e46c5.firebaseapp.com/"
-    ],
+    origin: ["https://revive-market-e46c5.web.app"],
     credentials: true,
   })
 );
